@@ -1,86 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Glass Calculator</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
 
-  <main class="card">
+    <div class="calculator">
 
-    <div class="card__head">
-      <div class="card__mark">&Sigma;</div>
-      <div>
-        <p class="card__eyebrow">Arithmetic Engine</p>
-        <h1 class="card__title">Calculator</h1>
-      </div>
-    </div>
+        <!-- Header -->
+        <div class="top">
+            <span class="brand">
+                GLASS CALC
+            </span>
+        </div>
 
-    <form method="POST" class="form">
 
-      <div class="field">
-        <label for="num1">First number</label>
-        <input
-          type="number" step="any" required
-          id="num1" name="num1"
-          value="{{ num1 if num1 is not none else '' }}"
-          placeholder="0"
-        >
-      </div>
+        <!-- Display -->
+        <div class="display-box">
 
-      <div class="field">
-        <label>Operation</label>
-        <div class="operators">
+            <div class="history-text">
+                Scientific Calculator
+            </div>
 
-          <input type="radio" id="op-add" name="operator" value="+" {% if operator == '+' %}checked{% endif %}>
-          <label for="op-add" aria-label="Add">+</label>
-
-          <input type="radio" id="op-sub" name="operator" value="-" {% if operator == '-' %}checked{% endif %}>
-          <label for="op-sub" aria-label="Subtract">&minus;</label>
-
-          <input type="radio" id="op-mul" name="operator" value="*" {% if operator == '*' %}checked{% endif %}>
-          <label for="op-mul" aria-label="Multiply">&times;</label>
-
-          <input type="radio" id="op-div" name="operator" value="/" {% if operator == '/' %}checked{% endif %}>
-          <label for="op-div" aria-label="Divide">&divide;</label>
+            <!-- Visible Display -->
+            <input type="text" id="display" class="display" value="{{ expression }}" readonly>
 
         </div>
-      </div>
 
-      <div class="field">
-        <label for="num2">Second number</label>
-        <input
-          type="number" step="any" required
-          id="num2" name="num2"
-          value="{{ num2 if num2 is not none else '' }}"
-          placeholder="0"
-        >
-      </div>
 
-      <button type="submit" class="submit">Calculate</button>
-    </form>
+        <!-- Calculator Form -->
+        <form method="POST" id="calculator-form">
 
-    {% if result is not none %}
-      <div class="result {% if result is string %}result--error{% endif %}">
-        {% if result is string %}
-          <p class="result__label">{{ result }}</p>
-        {% else %}
-          <p class="result__equation">{{ num1 }} {{ op_label }} {{ num2 }} =</p>
-          <p class="result__value">{{ result }}</p>
-        {% endif %}
-      </div>
-    {% endif %}
+            <!-- Hidden value sent to Flask -->
+            <input type="hidden" id="expression-input" name="expression" value="{{ expression }}">
 
-    <footer class="card__footer">Built with Flask &middot; Python</footer>
 
-  </main>
+            <div class="buttons">
+
+                <!-- Scientific Buttons -->
+                <button type="submit" class="small" data-key="s" name="button" value="sin(">
+                    sin
+                </button>
+
+                <button type="submit" class="small" data-key="c" name="button" value="cos(">
+                    cos
+                </button>
+
+                <button type="submit" class="small" data-key="t" name="button" value="tan(">
+                    tan
+                </button>
+
+                <button type="submit" class="small" data-key="l" name="button" value="log(">
+                    log
+                </button>
+
+
+                <!-- Function Buttons -->
+                <button type="submit" class="function" data-key="Delete" name="button" value="C">
+                    AC
+                </button>
+
+                <button type="submit" class="function" data-key="r" name="button" value="sqrt(">
+                    √
+                </button>
+
+                <button type="submit" class="function" data-key="(" name="button" value="(">
+                    (
+                </button>
+
+                <button type="submit" class="function" data-key=")" name="button" value=")">
+                    )
+                </button>
+
+
+                <!-- Row 1 -->
+                <button type="submit" data-key="7" name="button" value="7">7</button>
+                <button type="submit" data-key="8" name="button" value="8">8</button>
+                <button type="submit" data-key="9" name="button" value="9">9</button>
+
+                <button type="submit" class="operator" data-key="/" name="button" value="/">
+                    ÷
+                </button>
+
+
+                <!-- Row 2 -->
+                <button type="submit" data-key="4" name="button" value="4">4</button>
+                <button type="submit" data-key="5" name="button" value="5">5</button>
+                <button type="submit" data-key="6" name="button" value="6">6</button>
+
+                <button type="submit" class="operator" data-key="*" name="button" value="*">
+                    ×
+                </button>
+
+
+                <!-- Row 3 -->
+                <button type="submit" data-key="1" name="button" value="1">1</button>
+                <button type="submit" data-key="2" name="button" value="2">2</button>
+                <button type="submit" data-key="3" name="button" value="3">3</button>
+
+                <button type="submit" class="operator" data-key="-" name="button" value="-">
+                    −
+                </button>
+
+
+                <!-- Row 4 -->
+                <button type="submit" class="zero" data-key="0" name="button" value="0">
+                    0
+                </button>
+
+                <button type="submit" data-key="." name="button" value=".">
+                    .
+                </button>
+
+                <button type="submit" class="operator" data-key="+" name="button" value="+">
+                    +
+                </button>
+
+
+                <!-- Last Row -->
+                <button type="submit" class="function" data-key="Backspace" name="button" value="⌫">
+                    ⌫
+                </button>
+
+                <button type="submit" class="function" data-key="p" name="button" value="pi">
+                    π
+                </button>
+
+                <button type="submit" class="function" data-key="," name="button" value=",">
+                    ,
+                </button>
+
+                <button type="submit" id="equal-btn" class="equal" data-key="Enter" name="button" value="=">
+                    =
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
+
 </html>

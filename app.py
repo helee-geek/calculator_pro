@@ -1,54 +1,107 @@
 from flask import Flask, render_template, request
+import math
 
 app = Flask(__name__)
 
-# Used to show the operator as a symbol in the result line (e.g. "12 + 8 = 20")
-OP_LABELS = {"+": "+", "-": "\u2212", "*": "\u00d7", "/": "\u00f7"}
+allowed = {
+    "sqrt": math.sqrt,
+    "sin": math.sin,
+    "cos": math.cos,
+    "tan": math.tan,
+    "log": math.log10,
+    "pi": math.pi,
+    "pow": pow
+}
 
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    result = None
-    num1 = num2 = None
-    operator = "+"  # default selected operator on first page load
+
+    expression = ""
 
     if request.method == "POST":
-        num1 = request.form["num1"]
-        num2 = request.form["num2"]
-        operator = request.form["operator"]
 
-        try:
-            n1 = float(num1)
-            n2 = float(num2)
+        expression = request.form.get("expression", "")
+        button = request.form.get("button")
 
-            if operator == "+":
-                result = n1 + n2
-            elif operator == "-":
-                result = n1 - n2
-            elif operator == "*":
-                result = n1 * n2
-            elif operator == "/":
-                if n2 == 0:
-                    result = "Cannot divide by zero"
-                else:
-                    result = n1 / n2
 
-            # Show whole numbers without a trailing ".0"
-            if isinstance(result, float) and result == int(result):
-                result = int(result)
+        if button == "C":
+            expression = ""
 
-        except ValueError:
-            result = "Please enter valid numbers"
+        elif button == "⌫":
+            expression = expression[:-1]
+
+
+        elif button == "=":
+
+            try:
+                expression = str(
+                    eval(
+                        expression,
+                        {"__builtins__": None},
+                        allowed
+                    )
+                )
+
+            except:
+                expression = "Error"
+
+        else:
+            expression += button
+
 
     return render_template(
         "index.html",
-        result=result,
-        num1=num1,
-        num2=num2,
-        operator=operator,
-        op_label=OP_LABELS.get(operator, operator),
+        expression=expression
     )
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
+
+# User presses button
+#           |
+#           v
+# button value received
+#           |
+#           v
+# expression += button
+#           |
+#           v
+# Display shows expression
+#           |
+#           |
+#        Press "="
+#           |
+#           v
+# eval(expression)
+#           |
+#           |
+#   Uses allowed functions
+#           |
+#           v
+# Result generated
+#           |
+#           v
+# str(result)
+#           |
+#           v
+# Display output
+
+# Numbers:      0 1 2 3 4 5 6 7 8 9
+
+# Operators:    + - * / . ( )
+
+# Controls:
+# Backspace     Delete one character
+# Delete        Clear all
+# Enter         Calculate result
+
+# Scientific:
+# S             sin()
+# C             cos()
+# T             tan()
+# L             log()
+# R             sqrt()
+# P             π
