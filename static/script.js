@@ -14,6 +14,8 @@ const equalButton = document.getElementById("equal-btn");
 
 function updateDisplay() {
     display.value = hiddenInput.value;
+
+    display.scrollLeft = display.scrollWidth;
 }
 
 
@@ -67,7 +69,28 @@ function pressButton(value) {
 
         btnField.value = "=";
 
-        form.submit();
+        // form.submit();
+        fetch("/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams({
+                expression: hiddenInput.value,
+                button: "="
+            })
+        })
+            .then(res => res.text())
+            .then(html => {
+                // Convert response HTML to DOM
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+
+                const newValue = doc.getElementById("expression-input").value;
+
+                hiddenInput.value = newValue;
+                updateDisplay();
+            });
     }
     else {
         hiddenInput.value += value;

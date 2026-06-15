@@ -1,5 +1,3 @@
-
-
 from flask import Flask, render_template, request
 import math
 
@@ -46,7 +44,7 @@ def home():
                 )
 
             except:
-                expression = "Error"
+                expression = "Malformed Expression"
 
         else:
             expression += button

@@ -33,11 +33,9 @@ body {
             rgba(0, 90, 220, 0.25),
             transparent 300px),
 
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #E8F4FF,
-            #BCDFFF
-        );
+            #BCDFFF);
 }
 
 
@@ -55,16 +53,16 @@ body {
 
     position: relative;
 
-    background: rgba(255,255,255,0.45);
+    background: rgba(255, 255, 255, 0.45);
 
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
 
-    border: 1px solid rgba(255,255,255,0.75);
+    border: 1px solid rgba(255, 255, 255, 0.75);
 
     box-shadow:
-        0 25px 55px rgba(20,80,150,.25),
-        inset 0 1px 2px rgba(255,255,255,.8);
+        0 25px 55px rgba(20, 80, 150, .25),
+        inset 0 1px 2px rgba(255, 255, 255, .8);
 
 }
 
@@ -86,11 +84,9 @@ body {
     transform: rotate(30deg);
 
     background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.7),
-            transparent
-        );
+        linear-gradient(90deg,
+            rgba(255, 255, 255, .7),
+            transparent);
 
 }
 
@@ -133,11 +129,11 @@ body {
 
     border-radius: 25px;
 
-    background: rgba(255,255,255,.45);
+    background: rgba(255, 255, 255, .45);
 
     box-shadow:
-        inset 0 5px 15px rgba(255,255,255,.9),
-        0 5px 15px rgba(50,100,160,.08);
+        inset 0 5px 15px rgba(255, 255, 255, .9),
+        0 5px 15px rgba(50, 100, 160, .08);
 
 }
 
@@ -171,6 +167,8 @@ body {
     font-weight: 300;
 
     color: #1B456E;
+    overflow-x: auto;
+    white-space: nowrap;
 
 }
 
@@ -212,16 +210,14 @@ button {
 
 
     background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.95),
-            rgba(255,255,255,.55)
-        );
+        linear-gradient(145deg,
+            rgba(255, 255, 255, .95),
+            rgba(255, 255, 255, .55));
 
 
     box-shadow:
-        6px 6px 15px rgba(70,110,160,.20),
-        inset 0 2px 3px rgba(255,255,255,.9);
+        6px 6px 15px rgba(70, 110, 160, .20),
+        inset 0 2px 3px rgba(255, 255, 255, .9);
 
 
     transition:
@@ -238,7 +234,7 @@ button:hover {
     transform: translateY(-3px);
 
     box-shadow:
-        0 10px 25px rgba(0,100,255,.25);
+        0 10px 25px rgba(0, 100, 255, .25);
 }
 
 
@@ -250,7 +246,7 @@ button.active {
     transform: scale(.92);
 
     box-shadow:
-        inset 0 5px 12px rgba(0,0,0,.18);
+        inset 0 5px 12px rgba(0, 0, 0, .18);
 
 }
 
@@ -288,17 +284,15 @@ button.active {
 .operator {
 
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             #6EC0FF,
-            #2686FF
-        );
+            #2686FF);
 
     color: white;
 
 
     box-shadow:
-        0 10px 25px rgba(40,120,255,.40);
+        0 10px 25px rgba(40, 120, 255, .40);
 
 }
 
@@ -310,16 +304,14 @@ button.active {
 .equal {
 
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             #00A2FF,
-            #005EFF
-        );
+            #005EFF);
 
     color: white;
 
     box-shadow:
-        0 15px 30px rgba(0,90,255,.50);
+        0 15px 30px rgba(0, 90, 255, .50);
 
 }
 
