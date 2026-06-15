@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <main class="card">
+
+    <div class="card__head">
+      <div class="card__mark">&Sigma;</div>
+      <div>
+        <p class="card__eyebrow">Arithmetic Engine</p>
+        <h1 class="card__title">Calculator</h1>
+      </div>
+    </div>
+
+    <form method="POST" class="form">
+
+      <div class="field">
+        <label for="num1">First number</label>
+        <input
+          type="number" step="any" required
+          id="num1" name="num1"
+          value="{{ num1 if num1 is not none else '' }}"
+          placeholder="0"
+        >
+      </div>
+
+      <div class="field">
+        <label>Operation</label>
+        <div class="operators">
+
+          <input type="radio" id="op-add" name="operator" value="+" {% if operator == '+' %}checked{% endif %}>
+          <label for="op-add" aria-label="Add">+</label>
+
+          <input type="radio" id="op-sub" name="operator" value="-" {% if operator == '-' %}checked{% endif %}>
+          <label for="op-sub" aria-label="Subtract">&minus;</label>
+
+          <input type="radio" id="op-mul" name="operator" value="*" {% if operator == '*' %}checked{% endif %}>
+          <label for="op-mul" aria-label="Multiply">&times;</label>
+
+          <input type="radio" id="op-div" name="operator" value="/" {% if operator == '/' %}checked{% endif %}>
+          <label for="op-div" aria-label="Divide">&divide;</label>
+
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="num2">Second number</label>
+        <input
+          type="number" step="any" required
+          id="num2" name="num2"
+          value="{{ num2 if num2 is not none else '' }}"
+          placeholder="0"
+        >
+      </div>
+
+      <button type="submit" class="submit">Calculate</button>
+    </form>
+
+    {% if result is not none %}
+      <div class="result {% if result is string %}result--error{% endif %}">
+        {% if result is string %}
+          <p class="result__label">{{ result }}</p>
+        {% else %}
+          <p class="result__equation">{{ num1 }} {{ op_label }} {{ num2 }} =</p>
+          <p class="result__value">{{ result }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <footer class="card__footer">Built with Flask &middot; Python</footer>
+
+  </main>
+
+</body>
+</html>

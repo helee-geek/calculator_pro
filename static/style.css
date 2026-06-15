@@ -1,0 +1,271 @@
+/* =========================================================
+   Tokens
+   ========================================================= */
+:root {
+  --bg: #eef1f7;
+  --card: #ffffff;
+  --ink: #1b2538;
+  --muted: #7c879c;
+  --border: #e4e8f0;
+
+  --accent: #14b8a6;       /* teal — calculate / positive result */
+  --accent-ink: #0f766e;
+  --accent-2: #6366f1;     /* indigo — selected operator */
+  --error: #ef4444;
+  --error-bg: #fef2f2;
+
+  --font-display: 'Sora', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 8% 12%, rgba(20, 184, 166, 0.14), transparent 38%),
+    radial-gradient(circle at 92% 88%, rgba(99, 102, 241, 0.12), transparent 42%);
+}
+
+/* =========================================================
+   Card
+   ========================================================= */
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 36px;
+  border: 1px solid var(--border);
+  box-shadow: 0 30px 60px -25px rgba(27, 37, 56, 0.18);
+}
+
+.card__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.card__mark {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.card__eyebrow {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.card__title {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* =========================================================
+   Form
+   ========================================================= */
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field input[type="number"] {
+  width: 100%;
+  padding: 13px 14px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--ink);
+  background: #f8f9fc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.field input[type="number"]:focus {
+  border-color: var(--accent);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+}
+
+/* Operator segmented control */
+.operators {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.operators input[type="radio"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.operators label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: #f8f9fc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.operators label:hover {
+  border-color: var(--accent-2);
+}
+
+.operators input[type="radio"]:checked + label {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  color: #ffffff;
+  box-shadow: 0 8px 16px -8px rgba(99, 102, 241, 0.6);
+}
+
+.operators input[type="radio"]:focus-visible + label {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   Submit button
+   ========================================================= */
+.submit {
+  width: 100%;
+  padding: 14px 0;
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--accent);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px -10px rgba(20, 184, 166, 0.6);
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.submit:hover {
+  background: var(--accent-ink);
+}
+
+.submit:active {
+  transform: translateY(1px);
+}
+
+/* =========================================================
+   Result panel
+   ========================================================= */
+.result {
+  margin-top: 22px;
+  padding: 18px 20px;
+  border-radius: 12px;
+  background: #f0fdfa;
+  border-left: 4px solid var(--accent);
+  animation: rise 0.2s ease;
+}
+
+.result--error {
+  background: var(--error-bg);
+  border-left-color: var(--error);
+}
+
+.result__equation {
+  margin: 0 0 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.result__value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-ink);
+}
+
+.result__label {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--error);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   Footer
+   ========================================================= */
+.card__footer {
+  margin: 24px 0 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* =========================================================
+   Responsive / reduced motion
+   ========================================================= */
+@media (max-width: 380px) {
+  .card {
+    padding: 28px 22px;
+  }
+
+  .result__value {
+    font-size: 1.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result {
+    animation: none;
+  }
+}
