@@ -4,6 +4,7 @@
 
 const hiddenInput = document.getElementById("expression-input");
 const display = document.getElementById("display");
+const form = document.getElementById("calculator-form");
 const equalButton = document.getElementById("equal-btn");
 
 
@@ -38,13 +39,55 @@ function animateButton(key) {
 
 
 // ==============================
-// Add Value
+// Core Logic — used by BOTH mouse and keyboard
 // ==============================
 
-function addValue(value) {
-    hiddenInput.value += value;
-    updateDisplay();
+function pressButton(value) {
+
+    if (value === "C") {
+        hiddenInput.value = "";
+        updateDisplay();
+    }
+    else if (value === "⌫") {
+        hiddenInput.value = hiddenInput.value.slice(0, -1);
+        updateDisplay();
+    }
+    else if (value === "=") {
+        // Make sure Flask receives button="=" even though
+        // form.submit() doesn't include button name/value pairs
+        let btnField = document.getElementById("button-field");
+
+        if (!btnField) {
+            btnField = document.createElement("input");
+            btnField.type = "hidden";
+            btnField.name = "button";
+            btnField.id = "button-field";
+            form.appendChild(btnField);
+        }
+
+        btnField.value = "=";
+
+        form.submit();
+    }
+    else {
+        hiddenInput.value += value;
+        updateDisplay();
+    }
 }
+
+
+// ==============================
+// Mouse Clicks (buttons are now type="button")
+// ==============================
+
+document.querySelectorAll(".buttons button").forEach(button => {
+
+    button.addEventListener("click", function () {
+        const value = this.getAttribute("value");
+        pressButton(value);
+    });
+
+});
 
 
 // ==============================
@@ -56,188 +99,81 @@ document.addEventListener("keydown", function (e) {
     let key = e.key;
 
 
-    // ==========================
     // Numbers
-    // ==========================
-
     if (/^[0-9]$/.test(key)) {
-
-        addValue(key);
+        e.preventDefault();
+        pressButton(key);
         animateButton(key);
-
     }
 
-
-    // ==========================
     // Operators
-    // ==========================
-
     else if ([
-        "+",
-        "-",
-        "*",
-        "/",
-        ".",
-        "(",
-        ")"
+        "+", "-", "*", "/", ".", "(", ")"
     ].includes(key)) {
-
-        addValue(key);
+        e.preventDefault();
+        pressButton(key);
         animateButton(key);
-
     }
 
-
-    // ==========================
     // Scientific Shortcuts
-    // ==========================
-
     else if (key.toLowerCase() === "s") {
-
-        addValue("sin(");
+        e.preventDefault();
+        pressButton("sin(");
         animateButton("s");
-
     }
-
     else if (key.toLowerCase() === "c") {
-
-        addValue("cos(");
+        e.preventDefault();
+        pressButton("cos(");
         animateButton("c");
-
     }
-
     else if (key.toLowerCase() === "t") {
-
-        addValue("tan(");
+        e.preventDefault();
+        pressButton("tan(");
         animateButton("t");
-
     }
-
     else if (key.toLowerCase() === "l") {
-
-        addValue("log(");
+        e.preventDefault();
+        pressButton("log(");
         animateButton("l");
-
     }
-
     else if (key.toLowerCase() === "r") {
-
-        addValue("sqrt(");
+        e.preventDefault();
+        pressButton("sqrt(");
         animateButton("r");
-
     }
-
     else if (key.toLowerCase() === "p") {
-
-        addValue("pi");
+        e.preventDefault();
+        pressButton("pi");
         animateButton("p");
-
     }
 
-
-    // ==========================
     // Backspace
-    // ==========================
-
     else if (key === "Backspace") {
-
         e.preventDefault();
-
-        hiddenInput.value =
-            hiddenInput.value.slice(0, -1);
-
-        updateDisplay();
-
+        pressButton("⌫");
         animateButton("Backspace");
-
     }
 
-
-    // ==========================
     // Clear All
-    // ==========================
-
     else if (key === "Delete") {
-
         e.preventDefault();
-
-        hiddenInput.value = "";
-
-        updateDisplay();
-
+        pressButton("C");
         animateButton("Delete");
-
     }
 
-
-    // ==========================
     // Calculate
-    // ==========================
-
     else if (key === "Enter") {
-
         e.preventDefault();
-
         animateButton("Enter");
 
-
-        // Small delay so animation can play
         setTimeout(() => {
-
-            equalButton.click();
-
+            pressButton("=");
         }, 120);
-
-        return;
-
     }
-
-
-    // ==========================
-    // Ignore Other Keys
-    // ==========================
 
     else {
-
         return;
-
     }
-
-});
-
-
-// ==============================
-// Mouse Button Animation
-// ==============================
-
-document.querySelectorAll("button").forEach(button => {
-
-
-    button.addEventListener("mousedown", function () {
-
-        this.classList.add("active");
-
-    });
-
-
-    button.addEventListener("mouseup", function () {
-
-
-        setTimeout(() => {
-
-            this.classList.remove("active");
-
-        }, 100);
-
-    });
-
-
-    button.addEventListener("mouseleave", function () {
-
-        this.classList.remove("active");
-
-    });
-
 
 });
 

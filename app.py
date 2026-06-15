@@ -1,3 +1,5 @@
+
+
 from flask import Flask, render_template, request
 import math
 
@@ -88,20 +90,3 @@ if __name__ == "__main__":
 #           |
 #           v
 # Display output
-
-# Numbers:      0 1 2 3 4 5 6 7 8 9
-
-# Operators:    + - * / . ( )
-
-# Controls:
-# Backspace     Delete one character
-# Delete        Clear all
-# Enter         Calculate result
-
-# Scientific:
-# S             sin()
-# C             cos()
-# T             tan()
-# L             log()
-# R             sqrt()
-# P             π
