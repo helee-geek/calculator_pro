@@ -96,7 +96,15 @@ body {
 ============================== */
 
 .top {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     text-align: center;
+
+    margin-bottom: 15px;
 }
 
 
@@ -110,8 +118,54 @@ body {
 
     letter-spacing: 6px;
 
-    margin-bottom: 15px;
+}
 
+
+/* ==============================
+   GESTURE TOGGLE BUTTON
+============================== */
+
+.gesture-toggle {
+
+    position: absolute;
+
+    right: 0;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    color: #31587B;
+
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, .95),
+            rgba(255, 255, 255, .55));
+
+    box-shadow:
+        4px 4px 10px rgba(70, 110, 160, .20),
+        inset 0 2px 3px rgba(255, 255, 255, .9);
+
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+
+.gesture-toggle:hover {
+
+    transform: translateY(-50%) translateY(-2px);
+
+    box-shadow:
+        0 8px 18px rgba(0, 100, 255, .25);
 }
 
 
@@ -167,9 +221,17 @@ body {
     font-weight: 300;
 
     color: #1B456E;
+
     overflow-x: auto;
     white-space: nowrap;
 
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.display::-webkit-scrollbar {
+
+    display: none;
 }
 
 
@@ -328,6 +390,325 @@ button.active {
 
 
 /* ==============================
+   GESTURE PANEL (OVERLAY)
+============================== */
+
+.gesture-panel {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(10, 30, 60, .45);
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    z-index: 50;
+}
+
+
+.gesture-panel.open {
+
+    display: flex;
+}
+
+
+.gesture-panel-inner {
+
+    width: 340px;
+
+    padding: 22px;
+
+    border-radius: 28px;
+
+    background: rgba(255, 255, 255, .85);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(255, 255, 255, 0.75);
+
+    box-shadow:
+        0 25px 55px rgba(20, 80, 150, .35);
+
+    text-align: center;
+}
+
+
+.gesture-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #1B456E;
+
+    margin-bottom: 14px;
+}
+
+
+.gesture-close {
+
+    width: 30px;
+    height: 30px;
+
+    border: none;
+    border-radius: 50%;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    color: #31587B;
+
+    background: rgba(255, 255, 255, .7);
+}
+
+
+.gesture-mode-toggle {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-bottom: 14px;
+}
+
+
+.mode-btn {
+
+    flex: 1;
+
+    height: 38px;
+
+    border: none;
+    border-radius: 14px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    color: #6885A3;
+
+    background: rgba(255, 255, 255, .55);
+
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, .9);
+
+    transition: background .15s ease, color .15s ease, box-shadow .15s ease;
+}
+
+
+.mode-btn.active {
+
+    color: white;
+
+    background:
+        linear-gradient(180deg,
+            #00A2FF,
+            #005EFF);
+
+    box-shadow: 0 8px 18px rgba(0, 90, 255, .40);
+}
+
+
+.gesture-video-wrap {
+
+    position: relative;
+
+    width: 100%;
+    height: 240px;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    background: #0c1d33;
+
+    margin-bottom: 14px;
+}
+
+
+.gesture-video-wrap video,
+.gesture-video-wrap canvas {
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    /* Mirror so it feels like a mirror, not a recording */
+    transform: scaleX(-1);
+}
+
+.gesture-video-wrap video {
+
+    z-index: 1;
+    object-fit: cover;
+}
+
+.gesture-video-wrap canvas {
+
+    z-index: 2;
+    pointer-events: none;
+}
+
+
+.gesture-count-display {
+
+    font-size: 22px;
+    font-weight: 600;
+
+    color: #1B456E;
+
+    margin-bottom: 8px;
+}
+
+
+.gesture-hold-status {
+
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #005EFF;
+
+    min-height: 18px;
+}
+
+
+.gesture-hold-bar {
+
+    width: 100%;
+    height: 6px;
+
+    margin-bottom: 14px;
+
+    border-radius: 999px;
+
+    overflow: hidden;
+
+    background: rgba(0, 94, 255, .12);
+}
+
+
+.gesture-hold-progress {
+
+    height: 100%;
+    width: 0%;
+
+    border-radius: 999px;
+
+    background: linear-gradient(90deg, #00A2FF, #005EFF);
+
+    transition: width .08s linear;
+}
+
+
+.gesture-hold-progress.ready {
+
+    background: linear-gradient(90deg, #00c853, #00a152);
+}
+
+
+.gesture-expression-box {
+
+    padding: 12px 14px;
+
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, .55);
+
+    border: 1px solid rgba(255, 255, 255, .8);
+
+    margin-bottom: 14px;
+
+    text-align: left;
+}
+
+
+.gesture-expression-label {
+
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+
+    color: #6885A3;
+
+    margin-bottom: 6px;
+}
+
+
+.gesture-expression {
+
+    min-height: 28px;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    color: #1B456E;
+
+    overflow-x: auto;
+    white-space: nowrap;
+    text-align: right;
+
+    scrollbar-width: none;
+}
+
+
+.gesture-last-insert {
+
+    min-height: 18px;
+    margin-top: 6px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #005EFF;
+
+    transition: opacity .3s ease;
+}
+
+
+.gesture-last-insert.flash {
+
+    animation: insert-flash .6s ease;
+}
+
+
+@keyframes insert-flash {
+
+    0% { opacity: .4; transform: scale(.98); }
+    50% { opacity: 1; transform: scale(1.02); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+
+.gesture-hint {
+
+    font-size: 12px;
+
+    color: #6885A3;
+}
+
+
+/* ==============================
    RESPONSIVE
 ============================== */
 
@@ -375,6 +756,13 @@ button.active {
         height: 34px;
 
         font-size: 11px;
+
+    }
+
+
+    .gesture-panel-inner {
+
+        width: 90%;
 
     }
 

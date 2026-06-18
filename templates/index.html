@@ -7,7 +7,7 @@
     <title>Premium Glass Calculator</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ versioned_static('style.css') }}">
 </head>
 
 <body>
@@ -19,6 +19,10 @@
             <span class="brand">
                 GLASS CALC
             </span>
+
+            <button type="button" id="gesture-toggle-btn" class="gesture-toggle" title="Use hand gestures">
+                ✋
+            </button>
         </div>
 
 
@@ -84,8 +88,62 @@
     </div>
 
 
-    <!-- JavaScript -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <!-- ==============================
+         HAND GESTURE PANEL
+         Hidden until the ✋ button is pressed
+    ============================== -->
+    <div class="gesture-panel" id="gesture-panel">
+        <div class="gesture-panel-inner">
+
+            <div class="gesture-header">
+                <span>Hand Gesture Input</span>
+                <button type="button" id="gesture-close-btn" class="gesture-close">×</button>
+            </div>
+
+            <div class="gesture-mode-toggle">
+                <button type="button" id="mode-numbers-btn" class="mode-btn active">🔢 Numbers</button>
+                <button type="button" id="mode-actions-btn" class="mode-btn">✨ Actions</button>
+            </div>
+
+            <div class="gesture-video-wrap">
+                <video id="gesture-video" autoplay playsinline muted></video>
+                <canvas id="gesture-canvas" width="320" height="240"></canvas>
+            </div>
+
+            <div class="gesture-count-display">
+                Detected: <span id="gesture-readout">0</span>
+                <span id="gesture-hold-status" class="gesture-hold-status"></span>
+            </div>
+
+            <div class="gesture-hold-bar" aria-hidden="true">
+                <div id="gesture-hold-progress" class="gesture-hold-progress"></div>
+            </div>
+
+            <div class="gesture-expression-box">
+                <div class="gesture-expression-label">Your input</div>
+                <div id="gesture-expression" class="gesture-expression">—</div>
+                <div id="gesture-last-insert" class="gesture-last-insert"></div>
+            </div>
+
+            <p class="gesture-hint">
+                <strong>Hold steady ~1.5s</strong> to auto-insert — no button needed.<br>
+                <strong>Numbers:</strong> show 0–10 fingers across one or two hands.<br>
+                <strong>Actions:</strong> ✊ Clear &nbsp;·&nbsp; 🖐 Enter &nbsp;·&nbsp; ☝️ + &nbsp;·&nbsp; 🤙 − &nbsp;·&nbsp; 🤟 × &nbsp;·&nbsp; 👉 ÷<br>
+                👍 sin &nbsp;·&nbsp; 👎 cos &nbsp;·&nbsp; ✌️ tan
+            </p>
+
+        </div>
+    </div>
+
+
+    <!-- MediaPipe Hands (free, runs entirely client-side) -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+
+    <!-- Calculator JavaScript -->
+    <script src="{{ versioned_static('script.js') }}"></script>
+    <script src="{{ versioned_static('gesture.js') }}"></script>
 
 </body>
 

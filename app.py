@@ -1,7 +1,18 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 import math
+import os
 
 app = Flask(__name__)
+
+
+@app.context_processor
+def static_version():
+    def versioned_static(filename):
+        path = os.path.join(app.static_folder, filename)
+        v = int(os.path.getmtime(path)) if os.path.exists(path) else 0
+        return url_for("static", filename=filename, v=v)
+
+    return dict(versioned_static=versioned_static)
 
 allowed = {
     "sqrt": math.sqrt,

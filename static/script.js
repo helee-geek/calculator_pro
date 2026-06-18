@@ -15,7 +15,22 @@ const equalButton = document.getElementById("equal-btn");
 function updateDisplay() {
     display.value = hiddenInput.value;
 
-    display.scrollLeft = display.scrollWidth;
+    const len = display.value.length;
+
+    // Inputs scroll by caret position, not scrollLeft — move caret to the end
+    // so the latest digits stay visible on the right.
+    requestAnimationFrame(() => {
+        if (len > 0) {
+            display.setSelectionRange(len, len);
+        }
+        requestAnimationFrame(() => {
+            if (len > 0) {
+                display.setSelectionRange(len, len);
+            }
+        });
+    });
+
+    document.dispatchEvent(new CustomEvent("calculator-updated"));
 }
 
 
@@ -55,8 +70,6 @@ function pressButton(value) {
         updateDisplay();
     }
     else if (value === "=") {
-        // Make sure Flask receives button="=" even though
-        // form.submit() doesn't include button name/value pairs
         let btnField = document.getElementById("button-field");
 
         if (!btnField) {
@@ -69,7 +82,6 @@ function pressButton(value) {
 
         btnField.value = "=";
 
-        // form.submit();
         fetch("/", {
             method: "POST",
             headers: {
@@ -82,7 +94,6 @@ function pressButton(value) {
         })
             .then(res => res.text())
             .then(html => {
-                // Convert response HTML to DOM
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, "text/html");
 
@@ -100,7 +111,7 @@ function pressButton(value) {
 
 
 // ==============================
-// Mouse Clicks (buttons are now type="button")
+// Mouse Clicks (buttons are type="button")
 // ==============================
 
 document.querySelectorAll(".buttons button").forEach(button => {
@@ -122,14 +133,12 @@ document.addEventListener("keydown", function (e) {
     let key = e.key;
 
 
-    // Numbers
     if (/^[0-9]$/.test(key)) {
         e.preventDefault();
         pressButton(key);
         animateButton(key);
     }
 
-    // Operators
     else if ([
         "+", "-", "*", "/", ".", "(", ")"
     ].includes(key)) {
@@ -138,7 +147,6 @@ document.addEventListener("keydown", function (e) {
         animateButton(key);
     }
 
-    // Scientific Shortcuts
     else if (key.toLowerCase() === "s") {
         e.preventDefault();
         pressButton("sin(");
@@ -170,21 +178,18 @@ document.addEventListener("keydown", function (e) {
         animateButton("p");
     }
 
-    // Backspace
     else if (key === "Backspace") {
         e.preventDefault();
         pressButton("⌫");
         animateButton("Backspace");
     }
 
-    // Clear All
     else if (key === "Delete") {
         e.preventDefault();
         pressButton("C");
         animateButton("Delete");
     }
 
-    // Calculate
     else if (key === "Enter") {
         e.preventDefault();
         animateButton("Enter");
